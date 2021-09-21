@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5
+    container_name: mysql
+    restart: unless-stopped
+    networks:
+      - backend
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      # store somewhere else in real production
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      MYSQL_DATABASE: app
+
+  app:
+    build:
+      context: .
+      target: prod
+    image: express-demo-app:latest
+    container_name: api-server
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 3000:3000
+    volumes:
+      - log:/app/logs
+    environment:
+      # store somewhere else in real production
+      TYPEORM_HOST: mysql
+      TYPEORM_USERNAME:
+      TYPEORM_PASSWORD:
+      TYPEORM_DATABASE: app
+      NODE_ENV: production
+      PORT: 3000
+
+volumes:
+  mysql-data:
+  log:
+
+networks:
+  backend:

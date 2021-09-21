@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5
+    container_name: mysql-dev
+    networks:
+      - dev
+    volumes:
+      - mysql-data-dev:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: testdb
+
+  app:
+    image: node:16
+    container_name: api-server-dev
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - dev
+    ports:
+      - 8000:8000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      TYPEORM_HOST: mysql
+
+volumes:
+  mysql-data-dev:
+
+networks:
+  dev:

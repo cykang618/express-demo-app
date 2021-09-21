@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5
+    container_name: mysql-test
+    networks:
+      - test
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: testdb
+
+  app:
+    build:
+      context: .
+      target: test
+    image: express-demo-app:test
+    container_name: api-server-test
+    networks:
+      - test
+    ports:
+      - 8080:8080
+    volumes:
+      - ./logs/test:/app/logs
+    environment:
+      TYPEORM_HOST: mysql
+      PORT: 8080
+
+volumes:
+  mysql-data-test:
+
+networks:
+  test:
