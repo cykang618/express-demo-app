@@ -15,7 +15,7 @@ This repo is a simple API server written with Express and Typescript.
 
 #### 2. Clone this repo
 ```
-$ git clone https://github.com/cykang/express-demo-app.git 
+$ git clone https://github.com/cykang618/express-demo-app.git 
 $ cd express-demo-app
 ```
 
